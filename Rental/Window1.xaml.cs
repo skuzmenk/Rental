@@ -24,6 +24,7 @@ namespace Rental
         {
             InitializeComponent();
             categoryComboBox.SelectionChanged += CategoryComboBox_SelectionChanged;
+            this.Closing += Window1_Closing;
         }
         public Window1(Vehicle existingVehicle) : this()
         {
@@ -57,19 +58,42 @@ namespace Rental
         {
             try
             {
-                string manufacturer = manufacturerTextBox.Text;
-                string model = modelTextBox.Text;
-                int year = int.Parse(yearTextBox.Text);
-                double price = double.Parse(priceTextBox.Text);
-                string number = vehicleNumberTextBox.Text;
+                string manufacturer = manufacturerTextBox.Text.Trim();
+                string model = modelTextBox.Text.Trim();
+                string number = vehicleNumberTextBox.Text.Trim();
                 DateTime? date = startDatePicker.SelectedDate;
 
-                if (categoryComboBox.SelectedItem == null || !date.HasValue)
+                // Перевірка заповнення рядкових полів без пробілів на початку
+                if (string.IsNullOrWhiteSpace(manufacturer) || string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(number))
                 {
-                    MessageBox.Show("Заповніть всі поля.");
+                    MessageBox.Show("Виробник, модель і номер мають бути заповнені без початкових пробілів.");
                     return;
                 }
 
+                // Перевірка року
+                if (!int.TryParse(yearTextBox.Text, out int year) || year < 1886 || year > DateTime.Now.Year + 1)
+                {
+                    MessageBox.Show("Некоректний рік виробництва.");
+                    return;
+                }
+
+                // Перевірка ціни
+                if (!double.TryParse(priceTextBox.Text, out double price) || price < 0)
+                {
+                    MessageBox.Show("Ціна має бути додатнім числом.");
+                    return;
+                }
+
+                if (categoryComboBox.SelectedItem == null || !date.HasValue)
+                {
+                    MessageBox.Show("Будь ласка, виберіть категорію та дату.");
+                    return;
+                }
+                if (manufacturer.Any(char.IsDigit))
+                {
+                    MessageBox.Show("Назва виробника не повинна містити цифр.");
+                    return;
+                }
                 var category = (Category)Enum.Parse(typeof(Category), ((ComboBoxItem)categoryComboBox.SelectedItem).Content.ToString());
 
                 var car = new Car(manufacturer, model, year, price);
@@ -81,6 +105,32 @@ namespace Rental
             catch (Exception ex)
             {
                 MessageBox.Show($"Помилка: {ex.Message}");
+            }
+        }
+
+      
+        private void Window1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DialogResult != true) 
+            {
+                var result = MessageBox.Show(
+                    "Зберегти зміни перед закриттям?",
+                    "Підтвердження",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    Add_Click(null, null); 
+                    if (DialogResult != true)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }

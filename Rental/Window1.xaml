@@ -41,6 +41,6 @@
             <TextBox x:Name="vehicleNumberTextBox" Width="250"/>
         </StackPanel>
         <Image x:Name="carImage" Height="100" Margin="10"/>
-        <Button Content="Add" Margin="10" Click="Add_Click"/>
+        <Button Content="Зберегти" Margin="10" Click="Add_Click"/>
     </StackPanel>
 </Window>

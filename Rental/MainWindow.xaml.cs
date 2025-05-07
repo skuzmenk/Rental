@@ -16,10 +16,14 @@ namespace Rental
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
+            vehicleListBox.Visibility = Visibility.Visible;
+            rentalListBox.Visibility = Visibility.Visible;
             LoadData();
+            this.Closing += Window_Closing;
         }
         public class VehicleDTO
         {
@@ -31,7 +35,26 @@ namespace Rental
             public DateTime StartDate { get; set; }
             public string VehicleNumber { get; set; }
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DialogResult != true) // якщо ще не збережено
+            {
+                var result = MessageBox.Show(
+                    "Зберегти зміни перед закриттям?",
+                    "Підтвердження",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question);
 
+                if (result == MessageBoxResult.Yes)
+                {
+                    Save_Close(null, null);
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
         private void Add(object sender, RoutedEventArgs e)
         {
             var addWindow = new Window1();
@@ -76,16 +99,12 @@ namespace Rental
             {
                 string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(path, json);
-                Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Помилка при збереженні JSON: {ex.Message}");
             }
         }
-
-
-        private void Cancel_Close(object sender, RoutedEventArgs e) => Close();
 
         private void LoadData()
         {
@@ -97,11 +116,19 @@ namespace Rental
                 string json = File.ReadAllText(path);
                 var data = JsonSerializer.Deserialize<List<VehicleDTO>>(json);
 
+                int count = 0; 
+
                 foreach (var dto in data)
                 {
                     var car = new Car(dto.Manufacturer, dto.Model, dto.Year, dto.Price);
                     var vehicle = new Vehicle(dto.Category, car, dto.StartDate, car.Price, 0, dto.VehicleNumber);
+
                     vehicleListBox.Items.Add(vehicle);
+                    if (count ==1||count==3||count==4)
+                    {
+                        rentalListBox.Items.Add(vehicle.ToShortString());
+                    }
+                    count++;
                 }
             }
             catch (Exception ex)
@@ -110,14 +137,6 @@ namespace Rental
             }
         }
 
-
-        private void List_Auto(object sender, RoutedEventArgs e)
-        {
-            if (vehicleListBox.Visibility == Visibility.Visible)
-                vehicleListBox.Visibility = Visibility.Collapsed;
-            else
-                vehicleListBox.Visibility = Visibility.Visible;
-        }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {

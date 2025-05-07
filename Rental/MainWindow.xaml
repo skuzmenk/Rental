@@ -14,16 +14,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-            <Button Content="додати авто" Margin="10" Click="Add"/>
-            <Button Content="видалити авто" Margin="10" Click="Delete"/>
-            <Button Content="зберегти і закрити" Margin="10" Click="Save_Close"/>
-            <Button Content="не зберігати і закрити" Margin="10" Click="Cancel_Close"/>
-            <Button Content="список авто" Margin="10" Click="List_Auto"/>
+        <StackPanel Orientation="Horizontal" Margin="8" Grid.Row="0">
+            <Button Content="додати авто" Margin="8" Click="Add"/>
+            <Button Content="видалити авто" Margin="8" Click="Delete"/>
+            <Button Content="зберегти" Margin="8" Click="Save_Close" />
             <Button Content="Редагувати" Click="Edit_Click" Margin="5"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="vehicleListBox" Visibility="Collapsed"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="vehicleListBox" Grid.Column="0" Visibility="Collapsed" Margin="10"/>
+                <ListBox x:Name="rentalListBox" Grid.Column="1" Visibility="Collapsed" Margin="10"/>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </Window>
