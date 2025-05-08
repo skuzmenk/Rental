@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RentalLibrary;
+
 
 namespace Rental
 {
-    public enum Category
-    {
-        Sedan, Sports, Cabriolet, SUV
-    }
+    
 
     public class Car
     {

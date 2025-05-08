@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Threading.Tasks;
+using RentalLibrary;
 
 
 
@@ -25,19 +26,10 @@ namespace Rental
             LoadData();
             this.Closing += Window_Closing;
         }
-        public class VehicleDTO
-        {
-            public Category Category { get; set; }
-            public string Manufacturer { get; set; }
-            public string Model { get; set; }
-            public int Year { get; set; }
-            public double Price { get; set; }
-            public DateTime StartDate { get; set; }
-            public string VehicleNumber { get; set; }
-        }
+        
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (DialogResult != true) // якщо ще не збережено
+            if (DialogResult != true) 
             {
                 var result = MessageBox.Show(
                     "Зберегти зміни перед закриттям?",
@@ -143,6 +135,7 @@ namespace Rental
         {
             if (vehicleListBox.SelectedItem is Vehicle selectedVehicle)
             {
+
                 var editWindow = new Window1(selectedVehicle);
                 if (editWindow.ShowDialog() == true)
                 {
