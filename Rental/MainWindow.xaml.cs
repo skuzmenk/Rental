@@ -99,6 +99,7 @@ namespace Rental
             {
                 string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(path, json);
+                MessageBox.Show("Дані збережено.");
             }
             catch (Exception ex)
             {

@@ -62,36 +62,41 @@ namespace Rental
                 string model = modelTextBox.Text.Trim();
                 string number = vehicleNumberTextBox.Text.Trim();
                 DateTime? date = startDatePicker.SelectedDate;
-
-                // Перевірка заповнення рядкових полів без пробілів на початку
-                if (string.IsNullOrWhiteSpace(manufacturer) || string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(number))
+                if (string.IsNullOrWhiteSpace(manufacturer))
                 {
-                    MessageBox.Show("Виробник, модель і номер мають бути заповнені без початкових пробілів.");
+                    MessageBox.Show("Поле виробник заповнено некоректно");
                     return;
                 }
 
-                // Перевірка року
+                if (manufacturer.Any(char.IsDigit))
+                {
+                    MessageBox.Show("Назва виробника не повинна містити цифр.");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(model))
+                {
+                    MessageBox.Show("Поле модель заповнено некоректно");
+                    return;
+                }
                 if (!int.TryParse(yearTextBox.Text, out int year) || year < 1886 || year > DateTime.Now.Year + 1)
                 {
                     MessageBox.Show("Некоректний рік виробництва.");
                     return;
                 }
-
-                // Перевірка ціни
                 if (!double.TryParse(priceTextBox.Text, out double price) || price < 0)
                 {
                     MessageBox.Show("Ціна має бути додатнім числом.");
                     return;
                 }
-
                 if (categoryComboBox.SelectedItem == null || !date.HasValue)
                 {
                     MessageBox.Show("Будь ласка, виберіть категорію та дату.");
                     return;
                 }
-                if (manufacturer.Any(char.IsDigit))
+
+                if (string.IsNullOrWhiteSpace(number))
                 {
-                    MessageBox.Show("Назва виробника не повинна містити цифр.");
+                    MessageBox.Show("Поле номер заповнено некоректно");
                     return;
                 }
                 var category = (Category)Enum.Parse(typeof(Category), ((ComboBoxItem)categoryComboBox.SelectedItem).Content.ToString());

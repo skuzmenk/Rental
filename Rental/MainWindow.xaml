@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Rental"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-    WindowState="Maximized">
+    WindowState="Maximized" Background="#FFD5FF81">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,20 +14,27 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="8" Grid.Row="0">
-            <Button Content="додати авто" Margin="8" Click="Add"/>
-            <Button Content="видалити авто" Margin="8" Click="Delete"/>
-            <Button Content="зберегти" Margin="8" Click="Save_Close" />
-            <Button Content="Редагувати" Click="Edit_Click" Margin="5"/>
-        </StackPanel>
+        <Grid Margin="8" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="додати авто" Margin="5" FontSize="16" Height="40" Click="Add" Background="#FF90D900"/>
+            <Button Grid.Column="1" Content="Редагувати" Margin="5" FontSize="16" Height="40" Click="Edit_Click" Background="#FF90D900"/>
+            <Button Grid.Column="2" Content="видалити авто" Margin="5" FontSize="16" Height="40" Click="Delete" Background="#FF90D900"/>
+            <Button Grid.Column="3" Content="зберегти" Margin="5" FontSize="16" Height="40" Click="Save_Close" Background="#FF90D900"/>
+        </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListBox x:Name="vehicleListBox" Grid.Column="0" Visibility="Collapsed" Margin="10"/>
-                <ListBox x:Name="rentalListBox" Grid.Column="1" Visibility="Collapsed" Margin="10"/>
+                <ListBox x:Name="vehicleListBox" Grid.Column="0" Visibility="Collapsed" Margin="10" Background="#FFD0FF73"/>
+                <ListBox x:Name="rentalListBox" Grid.Column="1" Visibility="Collapsed" Margin="10" Background="#FFD0FF73"/>
             </Grid>
         </ScrollViewer>
     </Grid>
